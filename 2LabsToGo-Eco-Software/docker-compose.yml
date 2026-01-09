@@ -10,7 +10,7 @@ services:
       - '6379:6379'
 
   app:
-    image: ocmanager/ocmanager-eco
+    image: ocmanager/ocmanager-eco-django5
     restart: always
     container_name: oc_manager_cont
     depends_on:
