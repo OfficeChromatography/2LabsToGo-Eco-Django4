@@ -10,7 +10,7 @@ RUN apt-get update \
     curl
 
 # Add the Raspberry Pi repository and GPG key
-RUN echo "deb http://archive.raspberrypi.org/debian/ bookworm main" > /etc/apt/sources.list.d/raspi.list \
+RUN echo "deb http://archive.raspberrypi.org/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E
 
 # Install Python and picamera2
