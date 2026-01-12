@@ -11,7 +11,7 @@ RUN apt update && apt install -y python3-picamera2 --no-install-recommends
 # Install pip dependencies
 COPY requirements/base.txt /base_requirements4.txt
 #COPY requirements.txt /requirements.txt
-RUN pip install --no-cache-dir --break-system-packages -r /base_requirements4.txt
+RUN pip install --no-cache-dir -r /base_requirements4.txt
 #RUN pip install --no-cache-dir -r /requirements.txt
 
 ENV PYTHONUNBUFFERED=1
