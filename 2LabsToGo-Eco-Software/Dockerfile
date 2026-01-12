@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM python:3.13-trixie
 
 ENV PYTHONUNBUFFERED=1
 
