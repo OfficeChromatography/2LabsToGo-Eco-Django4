@@ -1,29 +1,27 @@
+# first stage
 FROM python:3.13-trixie
+
+# Install system dependencies first
+RUN apt update && apt install -y curl --no-install-recommends
+
+# Add Raspberry Pi repository for picamera2
+RUN echo "deb [signed-by=/etc/apt/keyrings/raspberrypi.gpg] http://archive.raspberrypi.org/debian/ trixie main" | tee /etc/apt/sources.list.d/raspberrypi.list
+RUN curl -sSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | gpg --dearmor -o /etc/apt/keyrings/raspberrypi.gpg
+RUN apt update && apt install -y python3-picamera2 --no-install-recommends
+# Install pip dependencies
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r /requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
-# Install prerequisites (gnupg for adding the Raspberry Pi repo)
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    gnupg \
-    ca-certificates \
-    curl
+# Set PYTHONPATH to prefer pip packages over system packages
+ENV PYTHONPATH=/usr/local/lib/python3.13/site-packages:/usr/lib/python3/dist-packages
 
-# Add the Raspberry Pi repository and GPG key
-RUN echo "deb http://archive.raspberrypi.org/debian/ trixie main" > /etc/apt/sources.list.d/raspi.list \
-    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 82B129927FA3303E
 
-# Install Python and picamera2
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    python3 \
-    python3-pip \
-    python3-picamera2
+WORKDIR /app
 
-# Clean up APT caches to reduce image size
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Copy requirements and install Python dependencies
-COPY requirements/base.txt /base_requirements4.txt
-RUN pip install --no-cache-dir --break-system-packages -r /base_requirements4.txt
+# Debugging commands:
+# docker run -it <image_id> <one of the below commands>
+# python -c "import sys; print('\n'.join(sys.path))"
+# find /usr -name "pykms*"
+# find /usr -name "libcamera*" | grep -E "\.(so|py)$"
