@@ -9,8 +9,10 @@ RUN echo "deb [signed-by=/etc/apt/keyrings/raspberrypi.gpg] http://archive.raspb
 RUN curl -sSL https://archive.raspberrypi.org/debian/raspberrypi.gpg.key | gpg --dearmor -o /etc/apt/keyrings/raspberrypi.gpg
 RUN apt update && apt install -y python3-picamera2 --no-install-recommends
 # Install pip dependencies
-COPY requirements.txt /requirements.txt
-RUN pip install --no-cache-dir -r /requirements.txt
+COPY requirements/base.txt /base_requirements4.txt
+#COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir --break-system-packages -r /base_requirements4.txt
+#RUN pip install --no-cache-dir -r /requirements.txt
 
 ENV PYTHONUNBUFFERED=1
 
